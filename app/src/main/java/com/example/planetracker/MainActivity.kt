@@ -5,28 +5,22 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-
-import androidx.compose.ui.unit.dp
-
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import android.util.Log
 import com.example.planetracker.ui.theme.PlaneTrackerTheme
-import com.example.planetracker.AircraftState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
-
-// Import the AircraftState and Position from the new file
-import com.example.planetracker.Position
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,7 +65,7 @@ class MainActivity : ComponentActivity() {
                             )
                         } else null
                     } ?: emptyList()
-                    Log.d("MainActivity", "Fetched ${aircraftStates.size} aircraft states")
+                    Log.d("MainActivity", "Fetched the states of ${aircraftStates.size} aircraft.")
                     withContext(Dispatchers.Main) {
                         onResult(aircraftStates)
                     }
@@ -86,19 +80,17 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
     @Composable
     fun AircraftStatesScreen(aircraftStates: List<AircraftState>, modifier: Modifier = Modifier) {
         LazyColumn(modifier = modifier) {
             items(aircraftStates) { state ->
                 Text(
-                    text = "Callsign: ${state.callsign}, Country: ${state.originCountry}, Position: ${state.position}",
+                    text = "Callsign: ${state.callsign}, Country: ${state.originCountry}, Position: (${state.position.latitude}, ${state.position.longitude})",
                     modifier = Modifier.padding(8.dp)
                 )
             }
         }
     }
-
 
     @Preview(showBackground = true)
     @Composable
